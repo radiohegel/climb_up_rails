@@ -1,0 +1,60 @@
+<h1>Make new climbing friends!</h1>
+<% if @user && @user.errors.any? %>
+  <% @user.errors.full_messages.each do |error| %>
+    <p> <%= error %> </p>
+  <% end %>
+<% end %>
+
+<p>Register here:</p>
+<%= bootstrap_form_for :user, url: {action: "create"} do |f| %>
+  <%= f.text_field :first_name, placeholder: "First name", hide_label: true %>
+  <%= f.text_field :last_name, placeholder: "Last name", hide_label: true %>
+  <%= f.email_field :email, placeholder: "Email", hide_label: true %>
+  <%= f.phone_field :phone, placeholder: "Phone", hide_label: true %>
+  <%= f.password_field :password_digest, placeholder: "Password", hide_label: true %>
+  <%= f.select :grade, [["I'm brand new!", 1], ["5.7-5.9 | v0", 2], ["5.10    |  v1", 3], ["5.11-   |  v2", 4], ["5.11+   |  v3", 5], ["5.12a/b |  v4", 6], ["5.12b/c |  v5", 7], ["5.12c/d |  v6", 8], ["5.13+   |  v7+", 9]], label: "Roughly what grade do you climb?:" %>
+  <%= f.select :gym  %>
+    <% @gyms.each do |gym| %>
+      <%= content_tag(gym.name, gym.id) %>
+    <% end %>
+  <% end %>
+  <%= f.submit "Submit", class: "btn btn-primary" %>
+<% end %>
+
+
+
+
+
+
+<form action="/users/new" method="POST">
+<div class="input-group">
+  <input type="text" class="form-control" placeholder="First name" name="user[first_name]" aria-describedby="basic-addon1"><br><br>
+  <input type="text" class="form-control" placeholder="Last name" name="user[last_name]" aria-describedby="basic-addon1"><br><br>
+  <input type="email" class="form-control" placeholder="Email" name="user[email]" aria-describedby="basic-addon1"><br><br>
+  <input type="tel" class="form-control" placeholder="Phone" name="user[phone]" aria-describedby="basic-addon1"><br><br>
+  <input type="password" class="form-control" placeholder="Password" name="user[password]" aria-describedby="basic-addon1"><br><br>
+
+
+  <label for="grade">Where do you climb? (don't worry, you can change this later):</label>
+  <select class="dropdown" name="user[gym_id]">
+    <% @gyms.each do |gym| %>
+      <option value=<%=gym.id%>> <%="#{gym.name}"%> </option>
+    <% end %>
+  </select><br>
+  <label for="grade">Roughly what grade do you climb?:</label>
+  <select class="dropdown" name="user[grade]">
+    <option value="" disabled selected>Please select your climbing grade</option>
+    <option value=1>I'm brand new!</option>
+    <option value=2>5.7-5.9 | v0</option>
+    <option value=3>5.10    |  v1</option>
+    <option value=4>5.11-   |  v2</option>
+    <option value=5>5.11+   |  v3</option>
+    <option value=6>5.12a/b |  v4</option>
+    <option value=7>5.12b/c |  v5</option>
+    <option value=8>5.12c/d |  v6</option>
+    <option value=9>5.13+   |  v7+</option>
+  </select>
+  </input><br>
+  <input type="submit" value="submit" class="btn btn-primary">
+</form>
+<p>If you are already a registered user, click <a href="/users/login">here to login</a>.</p>
